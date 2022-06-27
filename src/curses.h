@@ -6,10 +6,10 @@
 struct Curses {
     enum win_size {
         border_win_width  = 16,
-        border_win_height = 21,
+        border_win_height = 17,
 
         game_win_width  = 14,
-        game_win_height = 20,
+        game_win_height = 16,
 
         next_win_width  = 5,
         next_win_height = 6,

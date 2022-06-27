@@ -16,7 +16,7 @@ Game::Game() {
 static void next_shape(Shape*& current, Shape*& next) {
     delete current;
     current = next;
-    next = get_random_shape();
+    next = Shape::GetRandomShape();
 }
 
 bool Game::IsOver() const {
@@ -28,8 +28,8 @@ bool Game::IsOver() const {
 
 bool Game::Start() {
     int ch;
-    Shape* current = get_random_shape();
-    Shape* next = get_random_shape();
+    Shape* current = Shape::GetRandomShape();
+    Shape* next = Shape::GetRandomShape();
 
     DisplayAll(current, next);
 

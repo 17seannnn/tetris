@@ -5,26 +5,41 @@
 
 #include "shape.h"
 
-Shape* get_random_shape() {
+Shape* Shape::GetRandomShape() {
+    Shape* shape;
+
     // We have 7 different shapes
     switch (rand() % 7) {
     case 0:
-        return new I_Shape();
+        shape = new I_Shape();
+        break;
     case 1:
-        return new L_Shape();
+        shape = new L_Shape();
+        break;
     case 2:
-        return new J_Shape();
+        shape = new J_Shape();
+        break;
     case 3:
-        return new O_Shape();
+        shape = new O_Shape();
+        break;
     case 4:
-        return new S_Shape();
+        shape = new S_Shape();
+        break;
     case 5:
-        return new Z_Shape();
+        shape = new Z_Shape();
+        break;
     case 6:
-        return new T_Shape();
+        shape = new T_Shape();
+        break;
     default:
         return 0;
     }
+
+    // Reverse this shape 0..3 times
+    for (int i = rand() % 4; i != 0; i--)
+        shape->Reverse();
+
+    return shape;
 }
 
 Shape::Shape(int c)

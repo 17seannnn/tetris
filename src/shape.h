@@ -10,6 +10,8 @@ public:
     Shape(const Shape& tocopy);
     const Shape& operator=(const Shape& tocopy);
 
+    static Shape* GetRandomShape();
+
     int GetX() const
         { return pos_x; }
     int GetY() const
@@ -20,7 +22,8 @@ public:
     // False on collision with other bricks
     bool Move(const int (*map)[curses.game_win_width], int dx, int dy);
     // side == 1 - turn right, 0 - turn left
-    void Reverse(const int (*map)[curses.game_win_width], int side);
+    // Just .Reverse() if we don't want check map
+    void Reverse(const int (*map)[curses.game_win_width] = 0, int side = 0);
     void Place(int (*map)[curses.game_win_width]) const;
 protected:
     void Add(int x, int y)
@@ -96,7 +99,5 @@ public:
         Add(1, 2);
     }
 };
-
-Shape* get_random_shape();
 
 #endif

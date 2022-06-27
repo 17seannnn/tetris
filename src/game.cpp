@@ -35,6 +35,11 @@ bool Game::Start() {
 
     bool quit = false;
     while (!quit) {
+        if (!current->Move(map, 0, 1)) {
+            current->Place(map);
+            next_shape(current, next);
+        }
+
         ch = wgetch(curses.game_win);
         switch (ch) {
         case 'N': case 'n':
@@ -61,11 +66,6 @@ bool Game::Start() {
             break;
         default:
             break;
-        }
-
-        if (!current->Move(map, 0, 1)) {
-            current->Place(map);
-            next_shape(current, next);
         }
 
         DisplayAll(current, next);

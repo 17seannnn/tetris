@@ -14,12 +14,14 @@ public:
         { return pos_x; }
     int GetY() const
         { return pos_y; }
-    // just .Display() to display on game window on current position
+    // Just .Display() to display on game window on current position
     void Display(WINDOW* win = curses.game_win,
                  int on_x = -1, int on_y = -1) const;
-    void Hide() const;
-    void Move(int dx, int dy);
-    void Reverse(int side); // 1 - turn right, 0 - turn left
+    // False on collision with other bricks
+    bool Move(const int (*map)[curses.game_win_width], int dx, int dy);
+    // False on collision with other bricks
+    // side == 1 - turn right, 0 - turn left
+    bool Reverse(const int (*map)[curses.game_win_width], int side);
 protected:
     void Add(int x, int y)
         { shape[y][x] = ch; }

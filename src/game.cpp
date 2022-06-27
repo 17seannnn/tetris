@@ -15,41 +15,55 @@ Game::Game() {
 
 bool Game::Start() {
     int ch;
-    Shape *current = get_random_shape();
-    Shape *next = get_random_shape();
+    Shape* current = get_random_shape();
+    Shape* next = get_random_shape();
 
     DisplayBorder();
     DisplayGame();
     DisplayScore();
     DisplayNext(next);
+    current->Display();
+    curses.Refresh();
 
     bool quit = false;
     while (!quit) {
-        DisplayGame();
-        current->Display();
-
-        curses.Refresh();
-
         ch = wgetch(curses.game_win);
         switch (ch) {
-        case KEY_F(1):
+        case 'N': case 'n':
             delete current;
             current = next;
             next = get_random_shape();
-            DisplayNext(next);
             break;
-        case KEY_F(2):
-            current->Reverse(0);
+        case KEY_UP:
+            current->Reverse(map, 1);
             break;
-        case KEY_F(3):
-            current->Reverse(1);
+        case KEY_DOWN:
+            current->Reverse(map, 0);
+            break;
+        case KEY_LEFT:
+            current->Move(map, -1, 0);
+            break;
+        case KEY_RIGHT:
+            current->Move(map, 1, 0);
             break;
         case 'Q': case 'q':
             quit = true;
             break;
+        default:
+            break;
         }
 
-        usleep(50000);
+        current->Move(map, 0, 1);
+
+        DisplayBorder();
+        DisplayGame();
+        DisplayScore();
+        DisplayNext(next);
+        current->Display();
+
+        curses.Refresh();
+
+        usleep(200000);
     }
 
     delete current;

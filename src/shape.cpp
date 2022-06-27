@@ -61,14 +61,14 @@ void Shape::Display(WINDOW* win, int on_x, int on_y) const {
     }
 }
 
-void Shape::Hide() const {
-    for (int y = 0; y < 4; y++)
-        for (int x = 0; x < 4; x++)
-            if (shape[y][x])
-                mvwaddch(curses.game_win, pos_y + y, pos_x + x, '.');
+bool Shape::Move(const int (*map)[curses.game_win_width], int dx, int dy) {
+    pos_x += dx;
+    pos_y += dy;
+    Shape::Display();
+    return true;
 }
 
-void Shape::Reverse(int side) {
+bool Shape::Reverse(const int (*map)[curses.game_win_width], int side) {
     int new_shape[4][4];
 
     if (side == 0) {
@@ -84,4 +84,6 @@ void Shape::Reverse(int side) {
     for (int y = 0; y < 4; y++)
         for (int x = 0; x < 4; x++)
             shape[y][x] = new_shape[y][x];
+
+    return true;
 }

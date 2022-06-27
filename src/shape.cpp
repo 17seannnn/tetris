@@ -137,3 +137,8 @@ void Shape::Place(int (*map)[curses.game_win_width]) const {
             if (shape[y][x])
                 map[pos_y+y][pos_x+x] = shape[y][x];
 }
+
+void Shape::Push(const int (*map)[curses.game_win_width]) {
+    while (Move(map, 0, 1))
+        {}
+}

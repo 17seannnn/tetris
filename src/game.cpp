@@ -61,6 +61,9 @@ bool Game::Start() {
         case KEY_RIGHT:
             current->Move(map, 1, 0);
             break;
+        case ' ':
+            current->Push(map);
+            break;
         case 'Q': case 'q':
             quit = true;
             break;

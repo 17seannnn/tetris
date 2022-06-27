@@ -13,6 +13,7 @@ public:
 
     bool Start(); // True on play again
 private:
+    bool IsOver() const;
     void DisplayAll(const Shape* current, const Shape* next) const;
     void DisplayBorder() const;
     void DisplayGame() const;

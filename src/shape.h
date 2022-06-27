@@ -19,9 +19,9 @@ public:
                  int on_x = -1, int on_y = -1) const;
     // False on collision with other bricks
     bool Move(const int (*map)[curses.game_win_width], int dx, int dy);
-    // False on collision with other bricks
     // side == 1 - turn right, 0 - turn left
-    bool Reverse(const int (*map)[curses.game_win_width], int side);
+    void Reverse(const int (*map)[curses.game_win_width], int side);
+    void Place(int (*map)[curses.game_win_width]) const;
 protected:
     void Add(int x, int y)
         { shape[y][x] = ch; }

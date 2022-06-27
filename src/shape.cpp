@@ -68,7 +68,7 @@ bool Shape::Move(const int (*map)[curses.game_win_width], int dx, int dy) {
     return true;
 }
 
-bool Shape::Reverse(const int (*map)[curses.game_win_width], int side) {
+void Shape::Reverse(const int (*map)[curses.game_win_width], int side) {
     int new_shape[4][4];
 
     if (side == 0) {
@@ -84,6 +84,11 @@ bool Shape::Reverse(const int (*map)[curses.game_win_width], int side) {
     for (int y = 0; y < 4; y++)
         for (int x = 0; x < 4; x++)
             shape[y][x] = new_shape[y][x];
+}
 
-    return true;
+void Shape::Place(int (*map)[curses.game_win_width]) const {
+    for (int y = 0; y < 4; y++)
+        for (int x = 0; x < 4; x++)
+            if (shape[y][x])
+                map[pos_y+y][pos_x+x] = shape[y][x];
 }

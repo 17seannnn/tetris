@@ -13,26 +13,25 @@ Game::Game() {
             map[y][x] = 0;
 }
 
+static void next_shape(Shape*& current, Shape*& next) {
+    delete current;
+    current = next;
+    next = get_random_shape();
+}
+
 bool Game::Start() {
     int ch;
     Shape* current = get_random_shape();
     Shape* next = get_random_shape();
 
-    DisplayBorder();
-    DisplayGame();
-    DisplayScore();
-    DisplayNext(next);
-    current->Display();
-    curses.Refresh();
+    DisplayAll(current, next);
 
     bool quit = false;
     while (!quit) {
         ch = wgetch(curses.game_win);
         switch (ch) {
         case 'N': case 'n':
-            delete current;
-            current = next;
-            next = get_random_shape();
+            next_shape(current, next);
             break;
         case KEY_UP:
             current->Reverse(map, 1);
@@ -55,13 +54,7 @@ bool Game::Start() {
 
         current->Move(map, 0, 1);
 
-        DisplayBorder();
-        DisplayGame();
-        DisplayScore();
-        DisplayNext(next);
-        current->Display();
-
-        curses.Refresh();
+        DisplayAll(current, next);
 
         usleep(200000);
     }
@@ -70,6 +63,15 @@ bool Game::Start() {
     delete next;
 
     return false;
+}
+
+void Game::DisplayAll(const Shape* current, const Shape* next) const {
+    DisplayBorder();
+    DisplayGame();
+    DisplayScore();
+    DisplayNext(next);
+    current->Display();
+    curses.Refresh();
 }
 
 void Game::DisplayBorder() const {

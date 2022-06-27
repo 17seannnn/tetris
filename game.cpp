@@ -2,6 +2,7 @@
 #include <curses.h>
 
 #include "curses.h"
+#include "shape.h"
 
 #include "game.h"
 
@@ -14,6 +15,7 @@ Game::Game() {
 
 bool Game::Start() {
     int ch;
+    Shape *shape = new Square();
 
     DisplayBorder();
     DisplayScore();
@@ -21,6 +23,7 @@ bool Game::Start() {
     bool quit = false;
     while (!quit) {
         DisplayGame();
+        shape->Display();
         curses.Refresh();
 
         ch = wgetch(curses.game_win);
@@ -32,6 +35,8 @@ bool Game::Start() {
 
         usleep(50000);
     }
+
+    delete shape;
     return false;
 }
 

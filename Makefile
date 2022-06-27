@@ -1,4 +1,4 @@
-SRCMODULES = main.cpp curses.cpp game.cpp
+SRCMODULES = main.cpp curses.cpp game.cpp shape.cpp
 OBJMODULES = $(SRCMODULES:.cpp=.o)
 CXX = g++
 CXXFLAGS = -Wall -g

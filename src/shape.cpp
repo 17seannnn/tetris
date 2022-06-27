@@ -42,6 +42,12 @@ Shape* Shape::GetRandomShape() {
     return shape;
 }
 
+bool Shape::CheckCollision(const int (*map)[curses.game_win_width],
+                           const int shape[4][4],
+                           int x, int y) {
+    return false;
+}
+
 Shape::Shape(int c)
     : ch(c), pos_x((curses.game_win_width - 4) / 2), pos_y(0) {
     for (int y = 0; y < 4; y++)
@@ -77,9 +83,14 @@ void Shape::Display(WINDOW* win, int on_x, int on_y) const {
 }
 
 bool Shape::Move(const int (*map)[curses.game_win_width], int dx, int dy) {
-    pos_x += dx;
-    pos_y += dy;
-    Shape::Display();
+    int new_x = pos_x + dx, new_y = pos_y + dy;
+
+    if (CheckCollision(map, shape, new_x, new_y))
+        return false;
+
+    pos_x = new_x;
+    pos_y = new_y;
+
     return true;
 }
 
@@ -95,6 +106,9 @@ void Shape::Reverse(const int (*map)[curses.game_win_width], int side) {
             for (int x = 0; x < 4; x++)
                 new_shape[y][x] = shape[3-x][y];
     }
+
+    if (CheckCollision(map, new_shape, pos_x, pos_y))
+        return;
 
     for (int y = 0; y < 4; y++)
         for (int x = 0; x < 4; x++)

@@ -28,6 +28,11 @@ public:
 protected:
     void Add(int x, int y)
         { shape[y][x] = ch; }
+
+    // True on collision with something on map
+    static bool CheckCollision(const int (*map)[curses.game_win_width],
+                               const int shape[4][4],
+                               int x, int y);
 };
 
 class I_Shape : public Shape {

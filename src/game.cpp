@@ -68,10 +68,10 @@ bool Game::Start() {
             next_shape(current, next);
         }
 
+        DisplayAll(current, next);
+
         if (IsOver())
             break;
-
-        DisplayAll(current, next);
 
         usleep(200000);
     }

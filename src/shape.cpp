@@ -67,3 +67,21 @@ void Shape::Hide() const {
             if (shape[y][x])
                 mvwaddch(curses.game_win, pos_y + y, pos_x + x, '.');
 }
+
+void Shape::Reverse(int side) {
+    int new_shape[4][4];
+
+    if (side == 0) {
+        for (int y = 0; y < 4; y++)
+            for (int x = 0; x < 4; x++)
+                new_shape[y][x] = shape[x][3-y];
+    } else {
+        for (int y = 0; y < 4; y++)
+            for (int x = 0; x < 4; x++)
+                new_shape[y][x] = shape[3-x][y];
+    }
+
+    for (int y = 0; y < 4; y++)
+        for (int x = 0; x < 4; x++)
+            shape[y][x] = new_shape[y][x];
+}

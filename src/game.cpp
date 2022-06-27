@@ -39,7 +39,10 @@ bool Game::Start() {
             DisplayNext(next);
             break;
         case KEY_F(2):
-            current->Hide();
+            current->Reverse(0);
+            break;
+        case KEY_F(3):
+            current->Reverse(1);
             break;
         case 'Q': case 'q':
             quit = true;

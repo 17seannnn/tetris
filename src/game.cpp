@@ -25,12 +25,18 @@ bool Game::Start() {
 
     bool quit = false;
     while (!quit) {
+        DisplayGame();
+        current->Display();
+
         curses.Refresh();
 
         ch = wgetch(curses.game_win);
         switch (ch) {
         case KEY_F(1):
-            current->Display();
+            delete current;
+            current = next;
+            next = get_random_shape();
+            DisplayNext(next);
             break;
         case KEY_F(2):
             current->Hide();

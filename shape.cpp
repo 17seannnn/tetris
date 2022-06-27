@@ -1,8 +1,31 @@
+#include <stdlib.h>
 #include <curses.h>
 
 #include "curses.h"
 
 #include "shape.h"
+
+Shape* get_random_shape() {
+    // We have 7 different shapes
+    switch (rand() % 7) {
+    case 0:
+        return new I_Shape();
+    case 1:
+        return new L_Shape();
+    case 2:
+        return new J_Shape();
+    case 3:
+        return new O_Shape();
+    case 4:
+        return new S_Shape();
+    case 5:
+        return new Z_Shape();
+    case 6:
+        return new T_Shape();
+    default:
+        return 0;
+    }
+}
 
 Shape::Shape(int c)
     : ch(c), pos_x((curses.game_win_width - 4) / 2), pos_y(0) {
@@ -34,5 +57,6 @@ void Shape::Display() const {
 void Shape::Hide() const {
     for (int y = 0; y < 4; y++)
         for (int x = 0; x < 4; x++)
-            mvwaddch(curses.game_win, pos_y + y, pos_x + x, '.');
+            if (shape[y][x])
+                mvwaddch(curses.game_win, pos_y + y, pos_x + x, '.');
 }

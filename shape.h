@@ -1,4 +1,5 @@
-#include <curses.h>
+#ifndef SHAPE_H
+#define SHAPE_H
 
 class Shape {
     int ch;
@@ -7,12 +8,11 @@ class Shape {
 public:
     Shape(int c);
     Shape(const Shape& tocopy);
-
     const Shape& operator=(const Shape& tocopy);
 
-    int GetX()
+    int GetX() const
         { return pos_x; }
-    int GetY()
+    int GetY() const
         { return pos_y; }
     void Display() const;
     void Hide() const;
@@ -23,12 +23,76 @@ protected:
         { shape[y][x] = ch; }
 };
 
-class Square : public Shape {
+class I_Shape : public Shape {
 public:
-    Square() : Shape('#') {
+    I_Shape() : Shape('#') {
+        Add(1, 0);
+        Add(1, 1);
+        Add(1, 2);
+        Add(1, 3);
+    }
+};
+
+class L_Shape : public Shape {
+public:
+    L_Shape() : Shape('#') {
+        Add(1, 1);
+        Add(1, 2);
+        Add(1, 3);
+        Add(2, 3);
+    }
+};
+
+class J_Shape : public Shape {
+public:
+    J_Shape() : Shape('#') {
+        Add(2, 1);
+        Add(2, 2);
+        Add(2, 3);
+        Add(1, 3);
+    }
+};
+
+class O_Shape : public Shape {
+public:
+    O_Shape() : Shape('#') {
         Add(1, 2);
         Add(2, 2);
         Add(1, 3);
         Add(2, 3);
     }
 };
+
+class S_Shape : public Shape {
+public:
+    S_Shape() : Shape('#') {
+        Add(0, 2);
+        Add(1, 2);
+        Add(1, 3);
+        Add(2, 3);
+    }
+};
+
+class Z_Shape : public Shape {
+public:
+    Z_Shape() : Shape('#') {
+        Add(3, 2);
+        Add(2, 2);
+        Add(2, 3);
+        Add(1, 3);
+    }
+};
+
+class T_Shape : public Shape {
+public:
+    T_Shape() : Shape('#') {
+        Add(0, 3);
+        Add(1, 3);
+        Add(2, 3);
+        Add(1, 2);
+    }
+};
+
+Shape* get_random_shape();
+
+#endif

@@ -15,19 +15,26 @@ Game::Game() {
 
 bool Game::Start() {
     int ch;
-    Shape *shape = new Square();
+    Shape *current = get_random_shape();
+    Shape *next = get_random_shape();
 
     DisplayBorder();
+    DisplayGame();
     DisplayScore();
     DisplayNext();
+
     bool quit = false;
     while (!quit) {
-        DisplayGame();
-        shape->Display();
         curses.Refresh();
 
         ch = wgetch(curses.game_win);
         switch (ch) {
+        case KEY_F(1):
+            current->Display();
+            break;
+        case KEY_F(2):
+            current->Hide();
+            break;
         case 'Q': case 'q':
             quit = true;
             break;
@@ -36,7 +43,9 @@ bool Game::Start() {
         usleep(50000);
     }
 
-    delete shape;
+    delete current;
+    delete next;
+
     return false;
 }
 

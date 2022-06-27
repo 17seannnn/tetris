@@ -1,0 +1,6 @@
+tetris
+deps.mk
+*o
+*~
+*.swp
+TODO

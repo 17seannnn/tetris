@@ -21,7 +21,7 @@ bool Game::Start() {
     DisplayBorder();
     DisplayGame();
     DisplayScore();
-    DisplayNext();
+    DisplayNext(next);
 
     bool quit = false;
     while (!quit) {
@@ -67,12 +67,13 @@ void Game::DisplayGame() const {
             mvwaddch(curses.game_win, y, x, map[y][x] ? map[y][x] : '.');
 }
 
-void Game::DisplayNext() const {
+void Game::DisplayNext(const Shape* shape) const {
+    wclear(curses.next_win);
     mvwprintw(curses.next_win, 0, 0, "Next:");
-    for (int i = 0; i < 4; i++)
-        mvwprintw(curses.next_win, i+2, 0, "####");
+    shape->Display(curses.next_win, 0, 2);
 }
 
 void Game::DisplayScore() const {
+    wclear(curses.score_win);
     mvwprintw(curses.score_win, 0, 0, "Score: %d", score);
 }

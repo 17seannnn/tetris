@@ -1,6 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include "shape.h"
 #include "curses.h"
 
 class Game {
@@ -14,7 +15,7 @@ public:
 private:
     void DisplayBorder() const;
     void DisplayGame() const;
-    void DisplayNext() const;
+    void DisplayNext(const Shape* shape) const;
     void DisplayScore() const;
 };
 

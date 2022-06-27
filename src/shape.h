@@ -14,7 +14,9 @@ public:
         { return pos_x; }
     int GetY() const
         { return pos_y; }
-    void Display() const;
+    // just .Display() to display on game window on current position
+    void Display(WINDOW* win = curses.game_win,
+                 int on_x = -1, int on_y = -1) const;
     void Hide() const;
     void Move(int dx, int dy);
     void Reverse(int side); // 1 - turn right, 0 - turn left

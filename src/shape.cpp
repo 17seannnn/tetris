@@ -47,11 +47,18 @@ const Shape& Shape::operator=(const Shape& tocopy) {
     return *this;
 }
 
-void Shape::Display() const {
-    for (int y = 0; y < 4; y++)
-        for (int x = 0; x < 4; x++)
-            if (shape[y][x])
-                mvwaddch(curses.game_win, pos_y + y, pos_x + x, ch);
+void Shape::Display(WINDOW* win, int on_x, int on_y) const {
+    if (on_x == -1) {
+        for (int y = 0; y < 4; y++)
+            for (int x = 0; x < 4; x++)
+                if (shape[y][x])
+                    mvwaddch(win, pos_y + y, pos_x + x, ch);
+    } else {
+        for (int y = 0; y < 4; y++)
+            for (int x = 0; x < 4; x++)
+                if (shape[y][x])
+                    mvwaddch(win, on_y + y, on_x + x, ch);
+    }
 }
 
 void Shape::Hide() const {

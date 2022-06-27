@@ -32,7 +32,7 @@ protected:
     // True on collision with something on map
     static bool CheckCollision(const int (*map)[curses.game_win_width],
                                const int shape[4][4],
-                               int x, int y);
+                               int new_x, int new_y);
 };
 
 class I_Shape : public Shape {

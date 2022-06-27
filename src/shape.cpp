@@ -44,7 +44,17 @@ Shape* Shape::GetRandomShape() {
 
 bool Shape::CheckCollision(const int (*map)[curses.game_win_width],
                            const int shape[4][4],
-                           int x, int y) {
+                           int new_x, int new_y) {
+    for (int y = 0; y < 4; y++) {
+        for (int x = 0; x < 4; x++) {
+            if (!shape[y][x])
+                continue;
+            if (new_x + x < 0 || new_x + x >= curses.game_win_width ||
+                new_y + y >= curses.game_win_height)
+                return true;
+        }
+    }
+
     return false;
 }
 

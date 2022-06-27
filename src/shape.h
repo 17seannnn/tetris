@@ -27,7 +27,7 @@ protected:
 
 class I_Shape : public Shape {
 public:
-    I_Shape() : Shape('#') {
+    I_Shape() : Shape(' ' | COLOR_PAIR(curses.I_pair)) {
         Add(1, 0);
         Add(1, 1);
         Add(1, 2);
@@ -37,7 +37,7 @@ public:
 
 class L_Shape : public Shape {
 public:
-    L_Shape() : Shape('#') {
+    L_Shape() : Shape(' ' | COLOR_PAIR(curses.L_pair)) {
         Add(1, 1);
         Add(1, 2);
         Add(1, 3);
@@ -47,7 +47,7 @@ public:
 
 class J_Shape : public Shape {
 public:
-    J_Shape() : Shape('#') {
+    J_Shape() : Shape(' ' | COLOR_PAIR(curses.J_pair)) {
         Add(2, 1);
         Add(2, 2);
         Add(2, 3);
@@ -57,7 +57,7 @@ public:
 
 class O_Shape : public Shape {
 public:
-    O_Shape() : Shape('#') {
+    O_Shape() : Shape(' ' | COLOR_PAIR(curses.O_pair)) {
         Add(1, 2);
         Add(2, 2);
         Add(1, 3);
@@ -67,7 +67,7 @@ public:
 
 class S_Shape : public Shape {
 public:
-    S_Shape() : Shape('#') {
+    S_Shape() : Shape(' ' | COLOR_PAIR(curses.S_pair)) {
         Add(0, 2);
         Add(1, 2);
         Add(1, 3);
@@ -77,7 +77,7 @@ public:
 
 class Z_Shape : public Shape {
 public:
-    Z_Shape() : Shape('#') {
+    Z_Shape() : Shape(' ' | COLOR_PAIR(curses.Z_pair)) {
         Add(3, 2);
         Add(2, 2);
         Add(2, 3);
@@ -87,7 +87,7 @@ public:
 
 class T_Shape : public Shape {
 public:
-    T_Shape() : Shape('#') {
+    T_Shape() : Shape(' ' | COLOR_PAIR(curses.T_pair)) {
         Add(0, 3);
         Add(1, 3);
         Add(2, 3);

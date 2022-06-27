@@ -49,8 +49,14 @@ bool Shape::CheckCollision(const int (*map)[curses.game_win_width],
         for (int x = 0; x < 4; x++) {
             if (!shape[y][x])
                 continue;
+
+            // Check borders
             if (new_x + x < 0 || new_x + x >= curses.game_win_width ||
                 new_y + y >= curses.game_win_height)
+                return true;
+
+            // Check other bricks
+            if (map[new_y+y][new_x+x])
                 return true;
         }
     }
@@ -117,7 +123,7 @@ void Shape::Reverse(const int (*map)[curses.game_win_width], int side) {
                 new_shape[y][x] = shape[3-x][y];
     }
 
-    if (CheckCollision(map, new_shape, pos_x, pos_y))
+    if (map && CheckCollision(map, new_shape, pos_x, pos_y))
         return;
 
     for (int y = 0; y < 4; y++)

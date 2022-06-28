@@ -44,8 +44,9 @@ bool Game::Start() {
             if (!current->Move(map, 0, 1)) {
                 current->Place(map);
                 next_shape(current, next);
+            } else {
+                can_fall = false;
             }
-            can_fall = false;
             gettimeofday(&last_fall, 0);
         }
 

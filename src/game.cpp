@@ -54,17 +54,6 @@ bool Game::Start() {
     DisplayAll(current, next);
     bool quit = false;
     while (!quit) {
-        if (can_fall) {
-            if (!current->Move(map, 0, 1)) {
-                current->Place(map);
-                next_shape(current, next);
-            } else {
-                can_fall = false;
-            }
-            redraw = true;
-            gettimeofday(&last_fall, 0);
-        }
-
         ch = wgetch(curses.game_win);
         switch (ch) {
         case 'N': case 'n':
@@ -97,6 +86,17 @@ bool Game::Start() {
         }
         if (ch != ERR)
             redraw = true;
+
+        if (can_fall) {
+            if (!current->Move(map, 0, 1)) {
+                current->Place(map);
+                next_shape(current, next);
+            } else {
+                can_fall = false;
+            }
+            redraw = true;
+            gettimeofday(&last_fall, 0);
+        }
 
         if (redraw) {
             DisplayAll(current, next);

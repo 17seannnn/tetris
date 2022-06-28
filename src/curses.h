@@ -15,7 +15,10 @@ struct Curses {
         next_win_height = 6,
 
         score_win_width  = 20,
-        score_win_height = 1
+        score_win_height = 1,
+
+        gameover_win_width = 16,
+        gameover_win_height = 5,
     };
 
     enum color_pair {
@@ -32,6 +35,7 @@ struct Curses {
     WINDOW* game_win;
     WINDOW* next_win;
     WINDOW* score_win;
+    WINDOW* gameover_win;
 
     Curses() {}
     ~Curses();

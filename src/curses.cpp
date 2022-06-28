@@ -54,6 +54,12 @@ void Curses::Init() {
     int score_y = next_y;
     score_win = newwin(score_win_height, score_win_width, score_y, score_x);
 
+    int gameover_x = border_x - (gameover_win_width - border_win_width)/2;
+    int gameover_y = border_y + (border_win_height - gameover_win_height)/2 - 2;
+    gameover_win = newwin(gameover_win_height, gameover_win_width,
+                          gameover_y, gameover_x);
+    wtimeout(gameover_win, 0);
+
     // Colors
     init_pair(I_pair, -1, COLOR_RED);
     init_pair(L_pair, -1, COLOR_GREEN);

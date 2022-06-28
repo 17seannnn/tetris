@@ -1,3 +1,4 @@
+#include <string.h>
 #include <time.h>
 #include <sys/time.h>
 #include <unistd.h>
@@ -9,6 +10,10 @@
 #include "game.h"
 
 enum { fall_delay = 400000 };
+
+static const char msg_gameover[] = "Game Over...";
+static const char msg_playagain[] = "Play again?";
+static const char msg_playagain_choice[] = "[y/n/q]";
 
 Game::Game() {
     score = 0;
@@ -113,10 +118,17 @@ bool Game::Start() {
             can_fall = true;
     }
 
+    DisplayGameOver();
+    do {
+        ch = wgetch(curses.gameover_win);
+    } while (ch != 'Y' && ch != 'y' &&
+             ch != 'N' && ch != 'n' &&
+             ch != 'Q' && ch != 'q');
+
     delete current;
     delete next;
 
-    return false;
+    return ch == 'Y' || ch == 'y';
 }
 
 void Game::DisplayAll(const Shape* current, const Shape* next) const {
@@ -155,6 +167,28 @@ void Game::DisplayNext(const Shape* shape) const {
 void Game::DisplayScore() const {
     wclear(curses.score_win);
     mvwprintw(curses.score_win, 0, 0, "Score: %d", score);
+}
+
+void Game::DisplayGameOver() const {
+    wattrset(curses.game_win, A_BLINK);
+    DisplayGame();
+    wattrset(curses.game_win, A_NORMAL);
+    curses.Refresh();
+
+    wclear(curses.gameover_win);
+    wattrset(curses.gameover_win, A_REVERSE);
+
+    int x = (curses.gameover_win_width - strlen(msg_gameover))/2;
+    int y = curses.gameover_win_height/2 - 1;
+    mvwprintw(curses.gameover_win, y, x, msg_gameover);
+    x = (curses.gameover_win_width - strlen(msg_playagain))/2;
+    mvwprintw(curses.gameover_win, y+1, x, msg_playagain);
+    x = (curses.gameover_win_width - strlen(msg_playagain_choice))/2;
+    mvwprintw(curses.gameover_win, y+2, x, msg_playagain_choice);
+
+    wattrset(curses.gameover_win, A_NORMAL);
+
+    wrefresh(curses.gameover_win);
 }
 
 void Game::CheckLines() {

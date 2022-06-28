@@ -184,6 +184,18 @@ void Game::DisplayGameOver() const {
     curses.Refresh();
 
     wclear(curses.gameover_win);
+
+    int ch = ' ' | COLOR_PAIR(curses.gameover_pair);
+    for (int y = 0; y < curses.gameover_win_height; y++) {
+        mvwaddch(curses.gameover_win, y, 0, ch);
+        mvwaddch(curses.gameover_win, y, curses.gameover_win_width-1, ch);
+        if (y == 0 || y == curses.gameover_win_height-1) {
+            wmove(curses.gameover_win, y, 1);
+            for (int x = 1; x < curses.gameover_win_width-1; x++)
+                waddch(curses.gameover_win, ch);
+        }
+    }
+
     wattrset(curses.gameover_win, A_REVERSE);
 
     int x = (curses.gameover_win_width - strlen(msg_gameover))/2;

@@ -68,6 +68,7 @@ void Curses::Init() {
     init_pair(S_pair, -1, COLOR_MAGENTA);
     init_pair(Z_pair, -1, COLOR_CYAN);
     init_pair(T_pair, -1, COLOR_WHITE);
+    init_pair(gameover_pair, -1, COLOR_RED);
 }
 
 void Curses::Refresh() {

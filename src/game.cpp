@@ -8,7 +8,7 @@
 
 #include "game.h"
 
-enum { frame_delay = 150000000 };
+enum { fall_delay = 100000 };
 
 Game::Game() {
     score = 0;
@@ -32,21 +32,23 @@ static void next_shape(Shape*& current, Shape*& next) {
 
 bool Game::Start() {
     int ch;
-    timeval before_key, after_key;
-    timespec delay = { 0, 0 };
+    bool can_fall = true;
+    timeval last_fall, current_time;
     Shape* current = Shape::GetRandomShape();
     Shape* next = Shape::GetRandomShape();
 
     DisplayAll(current, next);
-
     bool quit = false;
     while (!quit) {
-        if (!current->Move(map, 0, 1)) {
-            current->Place(map);
-            next_shape(current, next);
+        if (can_fall) {
+            if (!current->Move(map, 0, 1)) {
+                current->Place(map);
+                next_shape(current, next);
+            }
+            can_fall = false;
+            gettimeofday(&last_fall, 0);
         }
 
-        gettimeofday(&before_key, 0);
         ch = wgetch(curses.game_win);
         switch (ch) {
         case 'N': case 'n':
@@ -79,19 +81,15 @@ bool Game::Start() {
         }
         DisplayAll(current, next);
 
-        gettimeofday(&after_key, 0);
-
         long diff;
-        if (after_key.tv_usec >= before_key.tv_usec)
-            diff = after_key.tv_usec - before_key.tv_usec;
+        gettimeofday(&current_time, 0);
+        if (current_time.tv_usec >= last_fall.tv_usec)
+            diff = current_time.tv_usec - last_fall.tv_usec;
         else
-            diff = (1000000000 - before_key.tv_usec) + after_key.tv_usec;
+            diff = (1000000000 - last_fall.tv_usec) + current_time.tv_usec;
 
-        long nsec = frame_delay - diff * 1000;
-        if (nsec > 0) {
-            delay.tv_nsec = nsec;
-            nanosleep(&delay, 0);
-        }
+        if (diff >= fall_delay)
+            can_fall = true;
 
         if (IsOver())
             break;

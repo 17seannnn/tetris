@@ -25,9 +25,10 @@ bool Game::IsOver() const {
 }
 
 static void next_shape(Shape*& current, Shape*& next) {
-    delete current;
+    if (current)
+        delete current;
     current = next;
-    next = Shape::GetRandomShape();
+    next = Shape::GetRandomShape(current->GetId());
 }
 
 static int get_diff(timeval& tv) {
@@ -48,9 +49,10 @@ bool Game::Start() {
     bool redraw;
     bool can_fall = true;
     timeval last_fall;
-    Shape* current = Shape::GetRandomShape();
+    Shape* current = 0;
     Shape* next = Shape::GetRandomShape();
 
+    next_shape(current, next);
     DisplayAll(current, next);
     bool quit = false;
     while (!quit) {

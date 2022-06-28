@@ -5,30 +5,34 @@
 
 #include "shape.h"
 
-Shape* Shape::GetRandomShape() {
+Shape* Shape::GetRandomShape(shape_id exclude) {
     Shape* shape;
 
-    // We have 7 different shapes
-    switch (rand() % 7) {
-    case 0:
+    int id;
+    do {
+        id = rand() % shape_count + 1; // + 1 because shape id starts with 1
+    } while (id == exclude);
+
+    switch (id) {
+    case I_id:
         shape = new I_Shape();
         break;
-    case 1:
+    case L_id:
         shape = new L_Shape();
         break;
-    case 2:
+    case J_id:
         shape = new J_Shape();
         break;
-    case 3:
+    case O_id:
         shape = new O_Shape();
         break;
-    case 4:
+    case S_id:
         shape = new S_Shape();
         break;
-    case 5:
+    case Z_id:
         shape = new Z_Shape();
         break;
-    case 6:
+    case T_id:
         shape = new T_Shape();
         break;
     default:
@@ -42,30 +46,8 @@ Shape* Shape::GetRandomShape() {
     return shape;
 }
 
-bool Shape::CheckCollision(const int (*map)[curses.game_win_width],
-                           const int shape[4][4],
-                           int new_x, int new_y) {
-    for (int y = 0; y < 4; y++) {
-        for (int x = 0; x < 4; x++) {
-            if (!shape[y][x])
-                continue;
-
-            // Check borders
-            if (new_x + x < 0 || new_x + x >= curses.game_win_width ||
-                new_y + y >= curses.game_win_height)
-                return true;
-
-            // Check other bricks
-            if (map[new_y+y][new_x+x])
-                return true;
-        }
-    }
-
-    return false;
-}
-
-Shape::Shape(int c)
-    : ch(c), pos_x((curses.game_win_width - 4) / 2), pos_y(0) {
+Shape::Shape(shape_id sid, int c)
+    : id(sid), ch(c), pos_x((curses.game_win_width - 4) / 2), pos_y(0) {
     for (int y = 0; y < 4; y++)
         for (int x = 0; x < 4; x++)
             shape[y][x] = 0;
@@ -141,4 +123,26 @@ void Shape::Place(int (*map)[curses.game_win_width]) const {
 void Shape::Push(const int (*map)[curses.game_win_width]) {
     while (Move(map, 0, 1))
         {}
+}
+
+bool Shape::CheckCollision(const int (*map)[curses.game_win_width],
+                           const int shape[4][4],
+                           int new_x, int new_y) {
+    for (int y = 0; y < 4; y++) {
+        for (int x = 0; x < 4; x++) {
+            if (!shape[y][x])
+                continue;
+
+            // Check borders
+            if (new_x + x < 0 || new_x + x >= curses.game_win_width ||
+                new_y + y >= curses.game_win_height)
+                return true;
+
+            // Check other bricks
+            if (map[new_y+y][new_x+x])
+                return true;
+        }
+    }
+
+    return false;
 }

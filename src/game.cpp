@@ -11,7 +11,12 @@
 
 enum {
     fall_delay = 400000,
-    score_push_mult = 2
+
+    score_push_mult = 2,
+    score_line_1 = 100,
+    score_line_2 = 200,
+    score_line_3 = 400,
+    score_line_4 = 800,
 };
 
 static const char msg_gameover[] = "Game Over...";
@@ -196,6 +201,8 @@ void Game::DisplayGameOver() const {
 
 void Game::CheckLines() {
     int x, y;
+    int count = 0;
+
     for (y = 0; y < curses.game_win_height; y++) {
         for (x = 0; x < curses.game_win_width; x++)
             if (!map[y][x])
@@ -205,5 +212,24 @@ void Game::CheckLines() {
         for ( ; y > 0; y--)
             for (x = 0; x < curses.game_win_width; x++)
                 map[y][x] = map[y-1][x];
+        count++;
+    }
+
+    // Player can fill <= 4 lines per time
+    switch (count) {
+    case 1:
+        score += score_line_1;
+        break;
+    case 2:
+        score += score_line_2;
+        break;
+    case 3:
+        score += score_line_3;
+        break;
+    case 4:
+        score += score_line_4;
+        break;
+    default:
+        break;
     }
 }

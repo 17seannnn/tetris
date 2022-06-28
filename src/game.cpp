@@ -92,6 +92,7 @@ bool Game::Start() {
             break;
         case ' ':
             score += current->Push(map) * score_push_mult;
+            can_fall = true; // To avoid player's alligning brick after pushing
             break;
         case 'Q': case 'q':
             quit = true;

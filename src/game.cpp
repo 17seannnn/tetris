@@ -56,40 +56,34 @@ bool Game::Start() {
         switch (ch) {
         case 'N': case 'n':
             next_shape(current, next);
-            redraw = true;
             break;
         case 'P': case 'p':
             current->Place(map);
             next_shape(current, next);
-            redraw = true;
             break;
         case KEY_UP:
             current->Reverse(map, 1);
-            redraw = true;
             break;
         case KEY_DOWN:
             current->Reverse(map, 0);
-            redraw = true;
             break;
         case KEY_LEFT:
             current->Move(map, -1, 0);
-            redraw = true;
             break;
         case KEY_RIGHT:
             current->Move(map, 1, 0);
-            redraw = true;
             break;
         case ' ':
             current->Push(map);
-            redraw = true;
             break;
         case 'Q': case 'q':
             quit = true;
-            redraw = true;
             break;
         default:
             break;
         }
+        if (ch != ERR)
+            redraw = true;
 
         if (redraw) {
             DisplayAll(current, next);

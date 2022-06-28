@@ -44,7 +44,7 @@ void Curses::Init() {
     int game_y = border_y;
     game_win = newwin(game_win_height, game_win_width, game_y, game_x);
     keypad(game_win, true);
-    wtimeout(game_win, 0);
+    wtimeout(game_win, 10); // 10 ms to avoid eating too much cpu time
 
     int next_x = border_x - 10;
     int next_y = border_y + 6;

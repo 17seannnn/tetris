@@ -42,7 +42,8 @@ public:
     // Just .Reverse() if we don't want check map
     void Reverse(const int (*map)[curses.game_win_width] = 0, int side = 0);
     void Place(int (*map)[curses.game_win_width]) const;
-    void Push(const int (*map)[curses.game_win_width]);
+    // Returns how much lines pushed through
+    int Push(const int (*map)[curses.game_win_width]);
 protected:
     void Add(int x, int y)
         { shape[y][x] = ch; }

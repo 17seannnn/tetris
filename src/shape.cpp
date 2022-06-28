@@ -120,9 +120,12 @@ void Shape::Place(int (*map)[curses.game_win_width]) const {
                 map[pos_y+y][pos_x+x] = shape[y][x];
 }
 
-void Shape::Push(const int (*map)[curses.game_win_width]) {
-    while (Move(map, 0, 1))
-        {}
+int Shape::Push(const int (*map)[curses.game_win_width]) {
+    int count = 0;
+    while (Move(map, 0, 1)) {
+        count++;
+    }
+    return count;
 }
 
 bool Shape::CheckCollision(const int (*map)[curses.game_win_width],

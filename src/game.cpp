@@ -9,7 +9,10 @@
 
 #include "game.h"
 
-enum { fall_delay = 400000 };
+enum {
+    fall_delay = 400000,
+    score_push_mult = 2
+};
 
 static const char msg_gameover[] = "Game Over...";
 static const char msg_playagain[] = "Play again?";
@@ -83,7 +86,7 @@ bool Game::Start() {
             current->Move(map, 1, 0);
             break;
         case ' ':
-            current->Push(map);
+            score += current->Push(map) * score_push_mult;
             break;
         case 'Q': case 'q':
             quit = true;

@@ -8,7 +8,7 @@
 
 #include "game.h"
 
-enum { fall_delay = 150000 };
+enum { fall_delay = 400000 };
 
 Game::Game() {
     score = 0;
@@ -38,7 +38,7 @@ static int get_diff(timeval& tv) {
     if (cur.tv_usec >= tv.tv_usec)
         diff = cur.tv_usec - tv.tv_usec;
     else
-        diff = (1000000000 - tv.tv_usec) + cur.tv_usec;
+        diff = (1000000 - tv.tv_usec) + cur.tv_usec;
 
     return diff;
 }
@@ -90,6 +90,7 @@ bool Game::Start() {
         if (can_fall) {
             if (!current->Move(map, 0, 1)) {
                 current->Place(map);
+                CheckLines();
                 next_shape(current, next);
             } else {
                 can_fall = false;
@@ -152,4 +153,18 @@ void Game::DisplayNext(const Shape* shape) const {
 void Game::DisplayScore() const {
     wclear(curses.score_win);
     mvwprintw(curses.score_win, 0, 0, "Score: %d", score);
+}
+
+void Game::CheckLines() {
+    int x, y;
+    for (y = 0; y < curses.game_win_height; y++) {
+        for (x = 0; x < curses.game_win_width; x++)
+            if (!map[y][x])
+                break;
+        if (x < curses.game_win_width)
+            continue;
+        for ( ; y > 0; y--)
+            for (x = 0; x < curses.game_win_width; x++)
+                map[y][x] = map[y-1][x];
+    }
 }

@@ -19,6 +19,7 @@ private:
     void DisplayGame() const;
     void DisplayNext(const Shape* shape) const;
     void DisplayScore() const;
+    void CheckLines();
 };
 
 #endif

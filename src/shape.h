@@ -66,60 +66,60 @@ public:
 class L_Shape : public Shape {
 public:
     L_Shape() : Shape(L_id, ' ' | COLOR_PAIR(curses.L_pair)) {
+        Add(1, 0);
         Add(1, 1);
         Add(1, 2);
-        Add(1, 3);
-        Add(2, 3);
+        Add(2, 2);
     }
 };
 
 class J_Shape : public Shape {
 public:
     J_Shape() : Shape(J_id, ' ' | COLOR_PAIR(curses.J_pair)) {
+        Add(2, 0);
         Add(2, 1);
         Add(2, 2);
-        Add(2, 3);
-        Add(1, 3);
+        Add(1, 2);
     }
 };
 
 class O_Shape : public Shape {
 public:
     O_Shape() : Shape(O_id, ' ' | COLOR_PAIR(curses.O_pair)) {
+        Add(1, 1);
         Add(1, 2);
+        Add(2, 1);
         Add(2, 2);
-        Add(1, 3);
-        Add(2, 3);
     }
 };
 
 class S_Shape : public Shape {
 public:
     S_Shape() : Shape(S_id, ' ' | COLOR_PAIR(curses.S_pair)) {
-        Add(0, 2);
+        Add(3, 1);
+        Add(2, 1);
+        Add(2, 2);
         Add(1, 2);
-        Add(1, 3);
-        Add(2, 3);
     }
 };
 
 class Z_Shape : public Shape {
 public:
     Z_Shape() : Shape(Z_id, ' ' | COLOR_PAIR(curses.Z_pair)) {
-        Add(3, 2);
+        Add(0, 1);
+        Add(1, 1);
+        Add(1, 2);
         Add(2, 2);
-        Add(2, 3);
-        Add(1, 3);
     }
 };
 
 class T_Shape : public Shape {
 public:
     T_Shape() : Shape(T_id, ' ' | COLOR_PAIR(curses.T_pair)) {
-        Add(0, 3);
-        Add(1, 3);
-        Add(2, 3);
+        Add(0, 2);
         Add(1, 2);
+        Add(2, 2);
+        Add(1, 1);
     }
 };
 

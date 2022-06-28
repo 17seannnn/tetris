@@ -1,3 +1,5 @@
+#include <time.h>
+#include <sys/time.h>
 #include <unistd.h>
 #include <curses.h>
 
@@ -6,17 +8,13 @@
 
 #include "game.h"
 
+enum { frame_delay = 150000000 };
+
 Game::Game() {
     score = 0;
     for (int y = 0; y < curses.game_win_height; y++)
         for (int x = 0; x < curses.game_win_width; x++)
             map[y][x] = 0;
-}
-
-static void next_shape(Shape*& current, Shape*& next) {
-    delete current;
-    current = next;
-    next = Shape::GetRandomShape();
 }
 
 bool Game::IsOver() const {
@@ -26,8 +24,16 @@ bool Game::IsOver() const {
     return false;
 }
 
+static void next_shape(Shape*& current, Shape*& next) {
+    delete current;
+    current = next;
+    next = Shape::GetRandomShape();
+}
+
 bool Game::Start() {
     int ch;
+    timeval before_key, after_key;
+    timespec delay = { 0, 0 };
     Shape* current = Shape::GetRandomShape();
     Shape* next = Shape::GetRandomShape();
 
@@ -40,6 +46,7 @@ bool Game::Start() {
             next_shape(current, next);
         }
 
+        gettimeofday(&before_key, 0);
         ch = wgetch(curses.game_win);
         switch (ch) {
         case 'N': case 'n':
@@ -70,13 +77,24 @@ bool Game::Start() {
         default:
             break;
         }
-
         DisplayAll(current, next);
+
+        gettimeofday(&after_key, 0);
+
+        long diff;
+        if (after_key.tv_usec >= before_key.tv_usec)
+            diff = after_key.tv_usec - before_key.tv_usec;
+        else
+            diff = (1000000000 - before_key.tv_usec) + after_key.tv_usec;
+
+        long nsec = frame_delay - diff * 1000;
+        if (nsec > 0) {
+            delay.tv_nsec = nsec;
+            nanosleep(&delay, 0);
+        }
 
         if (IsOver())
             break;
-
-        usleep(200000);
     }
 
     delete current;

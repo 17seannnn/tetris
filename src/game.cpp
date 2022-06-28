@@ -30,11 +30,24 @@ static void next_shape(Shape*& current, Shape*& next) {
     next = Shape::GetRandomShape();
 }
 
+static int get_diff(timeval& tv) {
+    long diff;
+    timeval cur;
+
+    gettimeofday(&cur, 0);
+    if (cur.tv_usec >= tv.tv_usec)
+        diff = cur.tv_usec - tv.tv_usec;
+    else
+        diff = (1000000000 - tv.tv_usec) + cur.tv_usec;
+
+    return diff;
+}
+
 bool Game::Start() {
     int ch;
     bool redraw;
     bool can_fall = true;
-    timeval last_fall, current_time;
+    timeval last_fall;
     Shape* current = Shape::GetRandomShape();
     Shape* next = Shape::GetRandomShape();
 
@@ -90,18 +103,11 @@ bool Game::Start() {
             redraw = false;
         }
 
-        long diff;
-        gettimeofday(&current_time, 0);
-        if (current_time.tv_usec >= last_fall.tv_usec)
-            diff = current_time.tv_usec - last_fall.tv_usec;
-        else
-            diff = (1000000000 - last_fall.tv_usec) + current_time.tv_usec;
-
-        if (diff >= fall_delay)
-            can_fall = true;
-
         if (IsOver())
             break;
+
+        if (get_diff(last_fall) >= fall_delay)
+            can_fall = true;
     }
 
     delete current;

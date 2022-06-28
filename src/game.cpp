@@ -8,7 +8,7 @@
 
 #include "game.h"
 
-enum { fall_delay = 100000 };
+enum { fall_delay = 150000 };
 
 Game::Game() {
     score = 0;
@@ -32,6 +32,7 @@ static void next_shape(Shape*& current, Shape*& next) {
 
 bool Game::Start() {
     int ch;
+    bool redraw;
     bool can_fall = true;
     timeval last_fall, current_time;
     Shape* current = Shape::GetRandomShape();
@@ -47,6 +48,7 @@ bool Game::Start() {
             } else {
                 can_fall = false;
             }
+            redraw = true;
             gettimeofday(&last_fall, 0);
         }
 
@@ -54,33 +56,45 @@ bool Game::Start() {
         switch (ch) {
         case 'N': case 'n':
             next_shape(current, next);
+            redraw = true;
             break;
         case 'P': case 'p':
             current->Place(map);
             next_shape(current, next);
+            redraw = true;
             break;
         case KEY_UP:
             current->Reverse(map, 1);
+            redraw = true;
             break;
         case KEY_DOWN:
             current->Reverse(map, 0);
+            redraw = true;
             break;
         case KEY_LEFT:
             current->Move(map, -1, 0);
+            redraw = true;
             break;
         case KEY_RIGHT:
             current->Move(map, 1, 0);
+            redraw = true;
             break;
         case ' ':
             current->Push(map);
+            redraw = true;
             break;
         case 'Q': case 'q':
             quit = true;
+            redraw = true;
             break;
         default:
             break;
         }
-        DisplayAll(current, next);
+
+        if (redraw) {
+            DisplayAll(current, next);
+            redraw = false;
+        }
 
         long diff;
         gettimeofday(&current_time, 0);

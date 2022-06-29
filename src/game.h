@@ -5,10 +5,11 @@
 #include "curses.h"
 
 class Game {
+    int difficult;
     int score;
     int map[curses.game_win_height][curses.game_win_width];
 public:
-    Game();
+    Game(int c_difficult);
     ~Game() {}
 
     bool Start(); // True on play again

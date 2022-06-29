@@ -23,8 +23,7 @@ static const char msg_gameover[] = "Game Over...";
 static const char msg_playagain[] = "Play again?";
 static const char msg_playagain_choice[] = "[y/n/q]";
 
-Game::Game() {
-    score = 0;
+Game::Game(int c_difficult) : difficult(c_difficult), score(0) {
     for (int y = 0; y < curses.game_win_height; y++)
         for (int x = 0; x < curses.game_win_width; x++)
             map[y][x] = 0;

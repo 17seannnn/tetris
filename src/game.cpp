@@ -10,7 +10,10 @@
 #include "game.h"
 
 enum {
-    fall_delay = 400000,
+    min_fall_delay = 75000,
+    fall_delay_difficult_1 = 400000,
+    fall_delay_difficult_2 = 250000,
+    fall_delay_difficult_3 = 150000,
 
     score_push_mult = 2,
     score_line_1 = 100,
@@ -23,7 +26,19 @@ static const char msg_gameover[] = "Game Over...";
 static const char msg_playagain[] = "Play again?";
 static const char msg_playagain_choice[] = "[y/n/q]";
 
-Game::Game(int c_difficult) : difficult(c_difficult), score(0) {
+Game::Game(int difficult) : score(0) {
+    switch (difficult) {
+    case 1:
+        fall_delay = fall_delay_difficult_1;
+        break;
+    case 2:
+        fall_delay = fall_delay_difficult_2;
+        break;
+    case 3:
+        fall_delay = fall_delay_difficult_3;
+        break;
+    }
+
     for (int y = 0; y < curses.game_win_height; y++)
         for (int x = 0; x < curses.game_win_width; x++)
             map[y][x] = 0;

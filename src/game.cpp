@@ -15,6 +15,9 @@ enum {
     fall_delay_difficult_2 = 250000,
     fall_delay_difficult_3 = 150000,
 
+    speedup_delay = 30, // in seconds
+    speedup_value = 25000,
+
     score_push_mult = 2,
     score_line_1 = 100,
     score_line_2 = 200,
@@ -46,6 +49,7 @@ Game::Game(int difficult) : score(0) {
 
 bool Game::IsOver() const {
     for (int x = 0; x < curses.game_win_width; x++)
+        // 4th line is limit
         if (map[3][x])
             return true;
     return false;
@@ -76,12 +80,15 @@ bool Game::Start() {
     bool redraw;
     bool can_fall = true;
     timeval last_fall;
+    timeval last_speedup;
     Shape* current = 0;
     Shape* next = Shape::GetRandomShape();
 
-    next_shape(current, next);
+    gettimeofday(&last_speedup, 0);
+
     clear();
     refresh();
+    next_shape(current, next);
     DisplayAll(current, next);
 
     bool quit = false;
@@ -120,12 +127,13 @@ bool Game::Start() {
         if (ch != ERR)
             redraw = true;
 
-        if (can_fall) {
+        if (can_fall || get_diff(last_fall) >= fall_delay) {
             if (!current->Move(map, 0, 1)) {
                 current->Place(map);
                 CheckLines();
                 next_shape(current, next);
-            } else {
+                can_fall = true;
+            } else if (can_fall) {
                 can_fall = false;
             }
             redraw = true;
@@ -139,9 +147,6 @@ bool Game::Start() {
 
         if (IsOver())
             break;
-
-        if (get_diff(last_fall) >= fall_delay)
-            can_fall = true;
     }
 
     DisplayGameOver();

@@ -78,7 +78,7 @@ static int get_diff(timeval& tv) {
 bool Game::Start() {
     int ch;
     bool redraw;
-    bool can_fall = true;
+    bool can_fall = true; // set true if we want fall immediately
     timeval last_fall;
     timeval last_speedup;
     Shape* current = 0;
@@ -128,13 +128,13 @@ bool Game::Start() {
             redraw = true;
 
         if (can_fall || get_diff(last_fall) >= fall_delay) {
-            if (!current->Move(map, 0, 1)) {
+            if (current->Move(map, 0, 1)) {
+                if (can_fall)
+                    can_fall = false;
+            } else {
                 current->Place(map);
                 CheckLines();
                 next_shape(current, next);
-                can_fall = true;
-            } else if (can_fall) {
-                can_fall = false;
             }
             redraw = true;
             gettimeofday(&last_fall, 0);

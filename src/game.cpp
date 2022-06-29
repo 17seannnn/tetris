@@ -62,15 +62,25 @@ static void next_shape(Shape*& current, Shape*& next) {
     next = Shape::GetRandomShape(current->GetId());
 }
 
-static int get_diff(timeval& tv) {
-    long diff;
+// mode: 'm' - microseconds, 's' - seconds
+static long get_diff(timeval& tv, char mode) {
     timeval cur;
-
     gettimeofday(&cur, 0);
-    if (cur.tv_usec >= tv.tv_usec)
-        diff = cur.tv_usec - tv.tv_usec;
-    else
-        diff = (1000000 - tv.tv_usec) + cur.tv_usec;
+
+    long diff;
+    switch (mode) {
+    case 'm':
+        if (cur.tv_usec >= tv.tv_usec)
+            diff = cur.tv_usec - tv.tv_usec;
+        else
+            diff = (1000000 - tv.tv_usec) + cur.tv_usec;
+        break;
+    case 's':
+        diff = cur.tv_sec - tv.tv_sec;
+        break;
+    default:
+        return 0;
+    }
 
     return diff;
 }
@@ -127,7 +137,7 @@ bool Game::Start() {
         if (ch != ERR)
             redraw = true;
 
-        if (can_fall || get_diff(last_fall) >= fall_delay) {
+        if (can_fall || get_diff(last_fall, 'm') >= fall_delay) {
             if (current->Move(map, 0, 1)) {
                 if (can_fall)
                     can_fall = false;
@@ -147,6 +157,13 @@ bool Game::Start() {
 
         if (IsOver())
             break;
+
+        if (get_diff(last_speedup, 's') >= speedup_delay) {
+            fall_delay -= speedup_value;
+            if (fall_delay < min_fall_delay)
+                fall_delay = min_fall_delay;
+            gettimeofday(&last_speedup, 0);
+        }
     }
 
     DisplayGameOver();

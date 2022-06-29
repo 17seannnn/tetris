@@ -105,13 +105,6 @@ bool Game::Start() {
     while (!quit) {
         ch = wgetch(curses.game_win);
         switch (ch) {
-        case 'N': case 'n':
-            next_shape(current, next);
-            break;
-        case 'P': case 'p':
-            current->Place(map);
-            next_shape(current, next);
-            break;
         case KEY_UP:
             current->Reverse(map, 1);
             break;

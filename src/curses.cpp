@@ -4,8 +4,8 @@
 
 Curses curses;
 
-static const int min_screen_width  = 80;
-static const int min_screen_height = 24;
+static const int min_screen_width  = 40;
+static const int min_screen_height = 18;
 
 Curses::~Curses() {
     delwin(border_win);
@@ -46,11 +46,11 @@ void Curses::Init() {
     keypad(game_win, true);
     wtimeout(game_win, 10); // 10 ms to avoid eating too much cpu time
 
-    int next_x = border_x - 10;
+    int next_x = border_x - (next_win_width + 4);
     int next_y = border_y + 6;
     next_win = newwin(next_win_height, next_win_width, next_y, next_x);
 
-    int score_x = border_x + border_win_width + 5;
+    int score_x = border_x + (border_win_width + 4);
     int score_y = next_y;
     score_win = newwin(score_win_height, score_win_width, score_y, score_x);
 

@@ -14,7 +14,7 @@ struct Curses {
         next_win_width  = 5,
         next_win_height = 6,
 
-        score_win_width  = 20,
+        score_win_width  = 18,
         score_win_height = 1,
 
         gameover_win_width = 20,

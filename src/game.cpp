@@ -80,7 +80,10 @@ bool Game::Start() {
     Shape* next = Shape::GetRandomShape();
 
     next_shape(current, next);
+    clear();
+    refresh();
     DisplayAll(current, next);
+
     bool quit = false;
     while (!quit) {
         ch = wgetch(curses.game_win);

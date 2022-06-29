@@ -105,16 +105,16 @@ bool Game::Start() {
     while (!quit) {
         ch = wgetch(curses.game_win);
         switch (ch) {
-        case KEY_UP:
+        case KEY_UP: case 'W': case 'w':
             current->Reverse(map, 1);
             break;
-        case KEY_DOWN:
+        case KEY_DOWN: case 'S': case 's':
             current->Reverse(map, 0);
             break;
-        case KEY_LEFT:
+        case KEY_LEFT: case 'A': case 'a':
             current->Move(map, -1, 0);
             break;
-        case KEY_RIGHT:
+        case KEY_RIGHT: case 'D': case 'd':
             current->Move(map, 1, 0);
             break;
         case ' ':
